@@ -45,8 +45,9 @@ bot.on('message', (user, userId, channelId, message,evt) => {
       }
     }
 
-    logger.debug(`Nomadbot: got command ${command} ${args.join(' ')}`);
+    logger.debug(`Nomadbot: got command '${command} ${args}'`);
 
+    // todo: move all commands to a folder
     switch (command) {
       // non-command directory commands
       case 'ping':
@@ -79,6 +80,7 @@ bot.on('message', (user, userId, channelId, message,evt) => {
           message: 'Fuck those fucking fuckers with a nailbat in the ass.'
         });
         break;
+      // commands in their own folder
       default:
         if (dirs.includes(command)) {
           const handler = require(`./commands/${command}/index.js`);
