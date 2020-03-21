@@ -30,7 +30,7 @@ bot.on('ready', (evt) => {
 
 bot.on('message', (user, userId, channelId, message,evt) => {
   if (message[0] === '!') {
-    console.debug(`Nomadbot: incoming message ${message} from user ${userId} on channel ${channelId}`);
+    logger.debug(`Nomadbot: incoming message '${message}' from user ${userId} on channel ${channelId}`);
     const args = message.substring(1).split(' ');
     const command = args.shift().toLocaleLowerCase();
 
@@ -45,7 +45,7 @@ bot.on('message', (user, userId, channelId, message,evt) => {
       }
     }
 
-    console.debug(`Nomadbot: got command ${command} ${args.join(' ')}`);
+    logger.debug(`Nomadbot: got command ${command} ${args.join(' ')}`);
 
     switch (command) {
       // non-command directory commands
