@@ -29,8 +29,8 @@ bot.on('ready', (evt) => {
 
 
 bot.on('message', (user, userId, channelId, message,evt) => {
-  // todo: split commands out to separate handlers, but y'know
   if (message[0] === '!') {
+    console.debug(`Nomadbot: incoming message ${message} from user ${userId} on channel ${channelId}`);
     const args = message.substring(1).split(' ');
     const command = args.shift().toLocaleLowerCase();
 
@@ -44,6 +44,8 @@ bot.on('message', (user, userId, channelId, message,evt) => {
         dirs.push(dir);
       }
     }
+
+    console.debug(`Nomadbot: got command ${command} ${args.join(' ')}`);
 
     switch (command) {
       // non-command directory commands
@@ -65,6 +67,12 @@ bot.on('message', (user, userId, channelId, message,evt) => {
           message: 'GOD DAMN RIGHT!'
         });
         break;
+      case 'notacult':
+        bot.sendMessage({
+          to: channelId,
+          message: 'Totally.'
+        });
+        break;
       case 'greatdivide':
         bot.sendMessage({
           to:channelId,
@@ -73,9 +81,7 @@ bot.on('message', (user, userId, channelId, message,evt) => {
         break;
       default:
         if (dirs.includes(command)) {
-          console.info(`require('./commands/${command}/index.js')`);
           const handler = require(`./commands/${command}/index.js`);
-          console.dir(handler);
           handler(bot, channelId, args);
         }
         break;
