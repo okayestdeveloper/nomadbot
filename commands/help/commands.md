@@ -1,16 +1,14 @@
-- *!help*  
+- **!help**  
     This.
-- *!ping*  
+- **!ping**  
     Reponds with 'U wot, m8?!'. Otherwise it's reached sentience and we should flee.
-- *!facts*  
+- **!facts**  
     Reponds with random nonsense, mostly about Brad.
-- *!menu*  
+- **!menu**  
     It's supposed to post a link to TNB's current menu.
-- *!hours*  
+- **!hours**  
     Hopefully lists the up to date taproom hours.
-- *!covid19protocol*  
-    ...
-- *!fucklegion*  
+- **!fucklegion**  
     There's only one answer.
-- *!greatdivide*  
-    Fuck those fucking fuckers with a nailbat in the ass.
+
+There are some hidden commands, as well. _Hidden for a reason_. 

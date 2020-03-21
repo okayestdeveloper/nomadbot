@@ -1,7 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 
 function handler(bot, channelId, args) {
-  let facts = fs.readFileSync('./commands/bradfacts/facts.json');
+  const filepath = path.resolve(__dirname, 'facts.json');
+  let facts = fs.readFileSync(filepath);
+
   if (facts && facts.length >= 0) {
     facts = JSON.parse(facts);
     if (facts && facts.length >= 0) {

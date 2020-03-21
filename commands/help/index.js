@@ -1,7 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 
 function handler(bot, channelId, args) {
-  let message = fs.readFileSync('./commands/help/commands.md');
+  const filepath = path.resolve(__dirname, 'commands.md');
+  const message = fs.readFileSync(filepath);
+
   if (message && message.length >= 0) {
     bot.sendMessage({
       to: channelId,
