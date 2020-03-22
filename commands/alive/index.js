@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function handler(bot, channelId, args) {
+function handler({ bot, channelId }) {
   const filepath = path.resolve(__dirname, 'stillalive.md');
   const message = fs.readFileSync(filepath);
 

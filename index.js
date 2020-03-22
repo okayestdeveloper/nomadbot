@@ -47,44 +47,11 @@ bot.on('message', (user, userId, channelId, message,evt) => {
 
     logger.debug(`Nomadbot: got command '${command} ${args}'`);
 
-    // todo: move all commands to a folder
     switch (command) {
-      // non-command directory commands
-      case 'ping':
-        bot.sendMessage({
-          to:channelId,
-          message: 'U wot, m8?!'
-        });
-        break;
-      case 'covid19protocol':
-        bot.sendMessage({
-          to:channelId,
-          message: 'Hide yo kids, hide yo wife. Cause they rapin errbody up in here. Also wash yo hands.'
-        });
-        break;
-      case 'fucklegion':
-        bot.sendMessage({
-          to:channelId,
-          message: 'GOD DAMN RIGHT!'
-        });
-        break;
-      case 'notacult':
-        bot.sendMessage({
-          to: channelId,
-          message: 'Totally.'
-        });
-        break;
-      case 'greatdivide':
-        bot.sendMessage({
-          to:channelId,
-          message: 'Fuck those fucking fuckers with a nailbat in the ass.'
-        });
-        break;
-      // commands in their own folder
       default:
         if (dirs.includes(command)) {
           const handler = require(`./commands/${command}/index.js`);
-          handler(bot, channelId, args);
+          handler({bot, channelId, args, logger});
         }
         break;
     }
