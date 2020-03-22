@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function handler(bot, channelId, args) {
+function handler({ bot, channelId }) {
   const filepath = path.resolve(__dirname, 'facts.json');
   let facts = fs.readFileSync(filepath);
 

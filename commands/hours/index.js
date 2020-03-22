@@ -24,7 +24,7 @@ function formatHours(hoursObj) {
 `;
 }
 
-function handler(bot, channelId, args) {
+function handler({ bot, channelId }) {
   const filepath = path.resolve(__dirname, 'hours.json');
   let hours = fs.readFileSync(filepath);
 
