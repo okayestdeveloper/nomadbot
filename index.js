@@ -5,45 +5,44 @@ dotenv.config({ path: envPath });
 
 const fs = require('fs');
 
-const Discord = require('discord.io');
 const logger = require('winston');
-
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
-    colorize: true
+  colorize: true
 });
 logger.level = 'debug';
 
+
 // Initialize Discord Bot
-var bot = new Discord.Client({
-   token: process.env.NOMADBOT_TOKEN,
-   autorun: true
+const Discord = require('discord.js');
+const client = new Discord.Client();
+
+client.on('ready', () => {
+  logger.info(`Connected. Logged in as ${client.user.tag}`);
 });
 
-bot.on('ready', (evt) => {
-    logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(bot.username + ' - (' + bot.id + ')');
-});
+client.login(process.env.NOMADBOT_TOKEN);
 
+client.on('message', (message) => {
+  const { author, channel, content } = message;
+  if (content[0] === '!') {
+    const username = author ? author.username || author.id : '??';
+    const channelName = channel ? channel.name || channel.recipient || channel.id : '??';
+    logger.debug(`Nomadbot: incoming message '${content}' from user ${username} on channel ${channelName}`);
 
-bot.on('message', (user, userId, channelId, message,evt) => {
-  if (message[0] === '!') {
-    logger.debug(`Nomadbot: incoming message '${message}' from user ${userId} on channel ${channelId}`);
-    const args = message.substring(1).split(' ');
+    const args = content.substring(1).split(' ');
     const command = args.shift().toLocaleLowerCase();
 
     // read the commands folder list
     const list = fs.readdirSync(path.resolve('commands'));
-    const dirs = [];
-
-    for (let key in list) {
-      const dir = list[key];
+    const dirs = list.reduce((allowed, dir) => {
       if (dir !== '.' && dir !== '..') {
-        dirs.push(dir);
+        allowed.push(dir);
       }
-    }
+
+      return allowed;
+    }, []);
 
     logger.debug(`Nomadbot: got command '${command} ${args}'`);
 
@@ -51,7 +50,7 @@ bot.on('message', (user, userId, channelId, message,evt) => {
       default:
         if (dirs.includes(command)) {
           const handler = require(`./commands/${command}/index.js`);
-          handler({bot, channelId, args, logger});
+          handler({ message, args, logger, username });
         }
         break;
     }

@@ -13,11 +13,11 @@ function isDir(path) {
   return stat.isDirectory();
 }
 
-function handler({ bot, channelId, logger }) {
+function handler({ message, logger, username }) {
   const commandDir = path.resolve(__dirname, '..');
   const files = fs.readdirSync(commandDir);
 
-  const message = files.reduce((msg, command) => {
+  const msgText = `\n` + files.reduce((msg, command) => {
     if (command !== '.' && command !== '..') {
       const dirPath = path.resolve(commandDir, command);
 
@@ -37,11 +37,10 @@ function handler({ bot, channelId, logger }) {
   }, []);
 
 
-  if (message && message.length >= 0) {
-    bot.sendMessage({
-      to: channelId,
-      message,
-    });
+  if (msgText && msgText.length >= 0) {
+    message.reply(msgText)
+      .then(() => logger.info(`Nomadbot replied to ${message.content} from ${username}`))
+      .catch((err) => logger.error(err));
   }
 }
 
