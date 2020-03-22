@@ -24,7 +24,7 @@ function formatHours(hoursObj) {
 `;
 }
 
-function handler(bot, channelId, args) {
+function handler({ message, logger, username }) {
   const filepath = path.resolve(__dirname, 'hours.json');
   let hours = fs.readFileSync(filepath);
 
@@ -32,12 +32,11 @@ function handler(bot, channelId, args) {
     hours = JSON.parse(hours);
 
     if (hours && hours.length >= 0) {
-      const message = hours.reduce((acc, cur) => acc + formatHours(cur), '');
+      const msgText = `\n` + hours.reduce((acc, cur) => acc + formatHours(cur), '');
 
-      bot.sendMessage({
-        to: channelId,
-        message,
-      });
+      message.reply(msgText)
+        .then(() => logger.info(`Nomadbot replied to ${message.content} from ${username}`))
+        .catch((err) => logger.error(err));
     }
   }
 }

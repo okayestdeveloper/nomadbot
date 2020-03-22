@@ -1,90 +1,73 @@
 const path = require('path');
-const envPath = path.join('.', `.env.local`); // todo:
+const envPath = path.join('.', `.env`);
 const dotenv = require('dotenv');
 dotenv.config({ path: envPath });
 
 const fs = require('fs');
 
-const Discord = require('discord.io');
-const logger = require('winston');
-
 // Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
-    colorize: true
+const winston = require('winston');
+require('winston-daily-rotate-file');
+
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.DailyRotateFile({
+      filename: 'nomadbot-%DATE%.log.json',
+      zippedArchive: true,
+      level: 'info',
+      dirname: '/tmp',
+      maxFiles: '7d',
+    }),
+  ],
 });
-logger.level = 'debug';
+
+if (process.env.NODE_ENV !== 'production') {
+  logger.remove(winston.transports.Console);
+  logger.add(new winston.transports.Console, {
+    colorize: true,
+    level: 'debug',
+  });
+}
 
 // Initialize Discord Bot
-var bot = new Discord.Client({
-   token: process.env.NOMADBOT_TOKEN,
-   autorun: true
+const Discord = require('discord.js');
+const client = new Discord.Client();
+
+client.on('ready', () => {
+  logger.info(`Connected. Logged in as ${client.user.tag}`);
 });
 
-bot.on('ready', (evt) => {
-    logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(bot.username + ' - (' + bot.id + ')');
-});
+client.login(process.env.NOMADBOT_TOKEN);
 
+client.on('message', (message) => {
+  const { author, channel, content } = message;
+  if (content[0] === '!') {
+    const username = author ? author.username || author.id : '??';
+    const channelName = channel ? channel.name || channel.recipient || channel.id : '??';
+    logger.debug(`Nomadbot: incoming message '${content}' from user ${username} on channel ${channelName}`);
 
-bot.on('message', (user, userId, channelId, message,evt) => {
-  if (message[0] === '!') {
-    logger.debug(`Nomadbot: incoming message '${message}' from user ${userId} on channel ${channelId}`);
-    const args = message.substring(1).split(' ');
+    const args = content.substring(1).split(' ');
     const command = args.shift().toLocaleLowerCase();
 
     // read the commands folder list
     const list = fs.readdirSync(path.resolve('commands'));
-    const dirs = [];
-
-    for (let key in list) {
-      const dir = list[key];
+    const dirs = list.reduce((allowed, dir) => {
       if (dir !== '.' && dir !== '..') {
-        dirs.push(dir);
+        allowed.push(dir);
       }
-    }
+
+      return allowed;
+    }, []);
 
     logger.debug(`Nomadbot: got command '${command} ${args}'`);
 
-    // todo: move all commands to a folder
     switch (command) {
-      // non-command directory commands
-      case 'ping':
-        bot.sendMessage({
-          to:channelId,
-          message: 'U wot, m8?!'
-        });
-        break;
-      case 'covid19protocol':
-        bot.sendMessage({
-          to:channelId,
-          message: 'Hide yo kids, hide yo wife. Cause they rapin errbody up in here. Also wash yo hands.'
-        });
-        break;
-      case 'fucklegion':
-        bot.sendMessage({
-          to:channelId,
-          message: 'GOD DAMN RIGHT!'
-        });
-        break;
-      case 'notacult':
-        bot.sendMessage({
-          to: channelId,
-          message: 'Totally.'
-        });
-        break;
-      case 'greatdivide':
-        bot.sendMessage({
-          to:channelId,
-          message: 'Fuck those fucking fuckers with a nailbat in the ass.'
-        });
-        break;
-      // commands in their own folder
       default:
         if (dirs.includes(command)) {
           const handler = require(`./commands/${command}/index.js`);
-          handler(bot, channelId, args);
+          handler({ message, args, logger, username });
         }
         break;
     }

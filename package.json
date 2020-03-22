@@ -4,15 +4,19 @@
   "description": "A cheap and easy bot that has very few Thirsty Nomad related tricks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production pm2 start index.js"
   },
   "author": "Brad Ledbetter <brad@okayestdeveloper.net>",
   "license": "MIT",
-  "devDependencies": {
-    "dotenv": "^8.2.0"
-  },
   "dependencies": {
-    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-    "winston": "^3.2.1"
+    "discord.js": "^12.0.2",
+    "dotenv": "^8.2.0",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradledbetter/nomadbot"
   }
 }
