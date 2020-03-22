@@ -1,18 +1,35 @@
 const path = require('path');
-const envPath = path.join('.', `.env.local`); // todo:
+const envPath = path.join('.', `.env`);
 const dotenv = require('dotenv');
 dotenv.config({ path: envPath });
 
 const fs = require('fs');
 
-const logger = require('winston');
 // Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
-  colorize: true
-});
-logger.level = 'debug';
+const winston = require('winston');
+require('winston-daily-rotate-file');
 
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.DailyRotateFile({
+      filename: 'nomadbot-%DATE%.log.json',
+      zippedArchive: true,
+      level: 'info',
+      dirname: '/tmp',
+      maxFiles: '7d',
+    }),
+  ],
+});
+
+if (process.env.NODE_ENV !== 'production') {
+  logger.remove(winston.transports.Console);
+  logger.add(new winston.transports.Console, {
+    colorize: true,
+    level: 'debug',
+  });
+}
 
 // Initialize Discord Bot
 const Discord = require('discord.js');
