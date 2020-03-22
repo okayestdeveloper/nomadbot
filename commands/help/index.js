@@ -7,7 +7,7 @@ function formatHelpText(command, helpText) {
 }
 
 function isDir(path) {
-  const fd = fs.openSync(path);
+  const fd = fs.openSync(path, 'r', 0o666);
   const stat = fs.fstatSync(fd);
   fs.close(fd, () => {});
   return stat.isDirectory();
