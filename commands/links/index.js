@@ -1,14 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 
-function handler({ bot, channelId }) {
+function handler({ message, logger, username }) {
   const filepath = path.resolve(__dirname, 'links.md');
-  const message = fs.readFileSync(filepath);
+  const msgText = `\n` + fs.readFileSync(filepath);
 
-  bot.sendMessage({
-    to: channelId,
-    message,
-  });
+  message.reply(msgText)
+    .then(() => logger.info(`Nomadbot replied to ${message.content} from ${username}`))
+    .catch((err) => logger.error(err));
 }
 
 

@@ -8,11 +8,13 @@
   },
   "author": "Brad Ledbetter <brad@okayestdeveloper.net>",
   "license": "MIT",
-  "devDependencies": {
-    "dotenv": "^8.2.0"
-  },
   "dependencies": {
-    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "discord.js": "^12.0.2",
+    "dotenv": "^8.2.0",
     "winston": "^3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradledbetter/nomadbot"
   }
 }
