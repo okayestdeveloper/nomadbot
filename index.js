@@ -16,7 +16,7 @@ const logger = winston.createLogger({
     new winston.transports.DailyRotateFile({
       filename: 'nomadbot-%DATE%.log.json',
       zippedArchive: true,
-      level: 'info',
+      level: 'debug',
       dirname: '/tmp',
       maxFiles: '7d',
     }),
@@ -66,7 +66,8 @@ client.on('message', (message) => {
     switch (command) {
       default:
         if (dirs.includes(command)) {
-          const handler = require(`./commands/${command}/index.js`);
+          const commandPath = path.resolve('.', 'commands', command, 'index.js');
+          const handler = require(commandPath);
           handler({ message, args, logger, username });
         }
         break;
