@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const chrono = require('chrono-node');
+const moment = require('moment');
 
 // 1. todo: add an arg option for "today" and "tomorrow"...maybe some kind of processing. e.g. "Next Saturday"
 // Import moment to figure out day of week.
@@ -16,25 +18,36 @@ const path = require('path');
 
 /**
  * Process the hours object (right now a string) into a standard format.
- * @param hoursObj
+ * @param {{day: string, start: string, end: string}} hoursObj
  * @returns {string}
  */
 function formatHours(hoursObj) {
-  return `- ${hoursObj}
-`;
+  return `- **${hoursObj.day}**: ${hoursObj.start} - ${hoursObj.end}\n`;
 }
 
-function handler({ message, logger, username }) {
+function handler({ message, args, logger, username }) {
   const filepath = path.resolve(__dirname, 'hours.json');
   let hours = fs.readFileSync(filepath);
+
+  let day;
+  if (args && args.length) {
+    const m = moment(chrono.parseDate(args.join(' ')), moment.ISO_8601);
+    if (m.isValid()) {
+      day = m.format('dddd');
+    }
+  }
 
   if (hours && hours.length >= 0) {
     hours = JSON.parse(hours);
 
     if (hours && hours.length >= 0) {
-      const msgText = `\n` + hours.reduce((acc, cur) => acc + formatHours(cur), '');
 
-      message.reply(msgText)
+      const msgText = hours
+        .filter((hourObj) => !day || hourObj.day === day)
+        .reduce((acc, cur) => acc + formatHours(cur), '') || `Closed`;
+
+
+      message.reply(`\n${msgText}`)
         .then(() => logger.info(`Nomadbot replied to ${message.content} from ${username}`))
         .catch((err) => logger.error(err));
     }
@@ -42,3 +55,4 @@ function handler({ message, logger, username }) {
 }
 
 module.exports = handler;
+
