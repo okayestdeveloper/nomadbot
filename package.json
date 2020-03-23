@@ -1,6 +1,6 @@
 {
   "name": "nomadbot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A cheap and easy bot that has very few Thirsty Nomad related tricks",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,10 @@
   "author": "Brad Ledbetter <brad@okayestdeveloper.net>",
   "license": "MIT",
   "dependencies": {
+    "chrono-node": "^1.4.4",
     "discord.js": "^12.0.2",
     "dotenv": "^8.2.0",
+    "moment": "^2.24.0",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2"
   },
