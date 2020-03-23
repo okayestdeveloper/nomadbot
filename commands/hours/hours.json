@@ -1,6 +1,22 @@
 [
-  "Wednesday: 4 - 7pm",
-  "Thursday: 4 - 7pm",
-  "Friday: 4 - 7pm",
-  "Saturday: 1 - 6pm"
+  {
+    "day": "Wednesday",
+    "start": "4pm",
+    "end": "7pm"
+  },
+  {
+    "day": "Thursday",
+    "start": "4pm",
+    "end": "7pm"
+  },
+  {
+    "day": "Friday",
+    "start": "4pm",
+    "end": "7pm"
+  },
+  {
+    "day": "Saturday",
+    "start": "1pm",
+    "end": "6pm"
+  }
 ]
