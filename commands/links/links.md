@@ -1,6 +1,7 @@
-- Menu: http://menu.thirstynomad.beer  
-- Teespring store: http://merch.thirstynomad.beer  
-- Website: https://thirstynomadbrewing.com  
-- Map/Directions: https://g.page/thirstynomad?share  
-- Facebook: https://facebook.com/ThirstyNomadBrewing/  
-- Instagram: https://www.instagram.com/thirstynomadbrewing/  
+- Menu: <http://menu.thirstynomad.beer>  
+- Teespring store: <http://merch.thirstynomad.beer>  
+- Website: <https://thirstynomadbrewing.com>  
+- Book club: <http://books.thirstynomad.beer>  
+- Map/Directions: <https://g.page/thirstynomad?share>  
+- Facebook: <https://facebook.com/ThirstyNomadBrewing/>  
+- Instagram: <https://www.instagram.com/thirstynomadbrewing/>  
