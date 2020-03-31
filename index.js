@@ -44,12 +44,16 @@ client.login(process.env.NOMADBOT_TOKEN);
 client.on('message', (message) => {
   const { author, channel, content } = message;
   if (content[0] === '!') {
+    // todo: refactor all handlers to accept an author
     const username = author ? author.username || author.id : '??';
     const channelName = channel ? channel.name || channel.recipient || channel.id : '??';
     logger.debug(`Nomadbot: incoming message '${content}' from user ${username} on channel ${channelName}`);
 
-    const args = content.substring(1).split(' ');
-    const command = args.shift().toLocaleLowerCase();
+    const args = content
+      .substring(1)
+      .split(' ')
+      .map((arg) => arg.toLocaleLowerCase());
+    const command = args.shift();
 
     // read the commands folder list
     const list = fs.readdirSync(path.resolve('commands'));
