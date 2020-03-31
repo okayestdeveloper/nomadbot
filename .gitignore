@@ -106,11 +106,10 @@ dist
 
 # IDE
 .idea
-.vscode
 
 # env
 .env
-firebase.config.json
+
 
 # misc
 notes.md
