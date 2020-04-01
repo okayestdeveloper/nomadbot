@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function handler({ message, logger, username }) {
+function handler({ message }) {
   const filepath = path.resolve(__dirname, 'facts.json');
   let facts = fs.readFileSync(filepath);
 
@@ -12,9 +12,7 @@ function handler({ message, logger, username }) {
       const random = Math.floor(Math.random() * (facts.length - 1)) + 1;
       const msgText = facts[random];
 
-      message.reply(msgText)
-        .then(() => logger.info(`Nomadbot replied to ${message.content} from ${username}`))
-        .catch((err) => logger.error(err));
+      return message.reply(msgText);
     }
   }
 }

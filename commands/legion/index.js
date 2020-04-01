@@ -1,5 +1,5 @@
 function handler({ message }) {
-  return message.reply('GOD DAMN RIGHT!');
+  return message.reply('Fucking Legion...');
 }
 
 module.exports = handler;
