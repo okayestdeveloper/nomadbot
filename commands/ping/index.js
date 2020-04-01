@@ -1,8 +1,6 @@
-function handler({ message, logger, username }) {
+function handler({ message }) {
   const msgText = 'U wot, m8?!';
-  message.reply(msgText)
-    .then(() => logger.info(`Nomadbot replied to ${message.content} from ${username}`))
-    .catch((err) => logger.error(err));
+  return message.reply(msgText);
 }
 
 module.exports = handler;

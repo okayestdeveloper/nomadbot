@@ -1,3 +1,14 @@
+/**
+ * Format all our help text in a consistent way
+ * @param {string} command
+ * @param {string} helpText
+ * @returns {string}
+ */
+function formatHelpText(command, helpText) {
+  return `- **!${command}**\n` +
+    `    ${helpText}\n`;
+}
+
 // todo: do a JSDOC for the beer type
 /*
 beer
@@ -37,6 +48,26 @@ function formatBeer(beer, showOnTap) {
   return msg;
 }
 
+/*
+{
+  day: string - name of the day of the week.
+  open: string - when we open
+  close: string - when we close
+  exceptions: string[] -- list of YYYY-MM-DD that we're closed on
+}
+*/
+
+/**
+ * Process the hours object (right now a string) into a standard format.
+ * @param {{day: string, start: string, end: string}} hoursObj
+ * @returns {string}
+ */
+function formatHours(hoursObj) {
+  return `- **${hoursObj.day}**: ${hoursObj.start} - ${hoursObj.end}\n`;
+}
+
 module.exports = {
   formatBeer,
+  formatHours,
+  formatHelpText,
 };

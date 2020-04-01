@@ -5,6 +5,7 @@ dotenv.config({ path: envPath });
 
 const fs = require('fs');
 
+// todo: move this to shared as a singleton
 // Configure logger settings
 const winston = require('winston');
 require('winston-daily-rotate-file');
@@ -44,8 +45,6 @@ client.login(process.env.NOMADBOT_TOKEN);
 client.on('message', (message) => {
   const { author, channel, content } = message;
   if (content[0] === '!') {
-    // todo: refactor all handlers to accept an author
-    const username = author ? author.username || author.id : '??';
     const channelName = channel ? channel.name || channel.recipient || channel.id : '??';
     logger.debug(`Nomadbot: incoming message '${content}' from user ${username} on channel ${channelName}`);
 
@@ -72,7 +71,10 @@ client.on('message', (message) => {
         if (dirs.includes(command)) {
           const commandPath = path.resolve('.', 'commands', command, 'index.js');
           const handler = require(commandPath);
-          handler({ message, args, logger, username });
+
+          handler({ message, args, logger, author })
+            .then(() => logger.info(`Nomadbot replied to ${message.content} from ${author.username}`))
+            .catch((err) => logger.error(err));
         }
         break;
     }
