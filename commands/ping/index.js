@@ -1,6 +1,5 @@
 function handler({ message }) {
-  const msgText = 'U wot, m8?!';
-  return message.reply(msgText);
+  return message.reply('U wot, m8?!');
 }
 
 module.exports = handler;
