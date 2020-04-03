@@ -4,7 +4,7 @@
   "description": "A cheap and easy bot that has very few Thirsty Nomad related tricks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start:prod": "NODE_ENV=production pm2 start index.js",
     "start:debug": "NODE_ENV=development pm2 start index.js"
   },
@@ -22,5 +22,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bradledbetter/nomadbot"
+  },
+  "devDependencies": {
+    "jest": "^25.2.4"
   }
 }
