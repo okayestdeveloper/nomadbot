@@ -1,5 +1,5 @@
 function handler({ message }) {
-  message.reply('Totally.');
+  return message.reply('Totally.');
 }
 
 module.exports = handler;
