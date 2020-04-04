@@ -25,7 +25,7 @@ function handler({ message, args }) {
 
   const day = getDay(args);
 
-  if (hours && hours.length >= 0) {
+  if (hours) {
     hours = JSON.parse(hours);
 
     if (hours && hours.length >= 0) {
@@ -36,6 +36,8 @@ function handler({ message, args }) {
       return message.reply(`\n${msgText}`);
     }
   }
+
+  return Promise.reject(new Error(`No hours found.`));
 }
 
 module.exports = handler;
