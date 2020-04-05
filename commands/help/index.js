@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { formatHelpText } = require('../../shared/formatters');
+const commandDir = path.resolve(__dirname, '..');
 
 /**
  * Return true if the given path is a directory
@@ -40,13 +41,14 @@ const filesReducer = (msg, command) => {
 }
 
 function handler({ message }) {
-  const commandDir = path.resolve(__dirname, '..');
   const files = fs.readdirSync(commandDir);
   const msgText = `\n` + files.reduce(filesReducer, []);
 
   if (msgText && msgText.length >= 0) {
     return message.reply(msgText);
   }
+
+  return Promise.reject(new Error('No help text found.'))
 }
 
 module.exports = handler;
