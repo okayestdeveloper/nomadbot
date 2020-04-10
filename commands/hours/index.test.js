@@ -1,9 +1,12 @@
-const handler = require('./index.js');
 const MockMessage = require('../../shared/message.mock');
+
 const fs = require('fs');
 jest.mock('fs');
-const formatters = require('../../shared/formatters');
+
+require('../../shared/formatters');
 jest.mock('../../shared/formatters');
+
+const handler = require('./index.js');
 
 
 describe('!hours', () => {
@@ -23,8 +26,6 @@ describe('!hours', () => {
 
   beforeEach(() => {
     message = new MockMessage();
-    formatters.formatHours
-      .mockImplementation((d) => `${d.day} ${d.start} ${d.end} | `);
     fs.readFileSync.mockReturnValue(hours);
  });
 

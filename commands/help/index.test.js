@@ -1,11 +1,15 @@
-const handler = require('./index.js');
 const MockMessage = require('../../shared/message.mock');
+
 const fs = require('fs');
 jest.mock('fs');
+
 const path = require('path');
 jest.mock('path');
-const formatters = require('../../shared/formatters');
+
+require('../../shared/formatters');
 jest.mock('../../shared/formatters');
+
+const handler = require('./index.js');
 
 describe('!help', () => {
   let message;
@@ -25,8 +29,6 @@ describe('!help', () => {
     });
 
     path.resolve.mockReturnValue('/');
-
-    formatters.formatHelpText.mockReturnValue((cmd,text) => text);
   });
 
   it(`should use readdirSync to get a list of directories`, () => {
