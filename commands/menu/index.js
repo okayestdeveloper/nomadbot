@@ -1,7 +1,7 @@
 const { formatBeer } = require('../../shared/formatters');
-const db = require('../../shared/firebase')();
+const db = require('../../shared/firebase')
 
-function handler({ message, logger, user, args }) {
+function handler({ message, logger, args }) {
   const showAll = args.includes('all');
 
   let query = db.collection('beers');
