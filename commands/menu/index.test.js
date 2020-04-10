@@ -17,43 +17,44 @@ describe('!menu', () => {
   });
 
   describe('called without "all" argument', () => {
-    it('should call formatBeer for each ontap beer', (done) => {
+    it('should call formatBeer for each ontap beer', () => {
       const tapCount = mockBeers.filter((b) => b.ontap).length;
-      handler({ message, args: [], logger: console })
+      return handler({ message, args: [], logger: console })
         .then(() => {
           expect(formatters.formatBeer.mock.calls.length).toEqual(tapCount);
-          done();
-        })
-        .catch(() => expect(false).toEqual(true));
+        });
     });
 
     it('should resolve to a list of beers on tap', () => {
-      handler({ message, args: [], logger: console })
+      return handler({ message, args: [], logger: console })
         .then((beers) => {
-          beers.forEach((beer) => expect(beer.ontap).toEqual(true));
-          done();
-        })
-        .catch(() => expect(false).toEqual(true));
+          beers.forEach((beer) => {
+            expect(beer.includes('no')).toBeFalsy();
+          });
+        });
     });
   });
 
   describe('called with "all" argument', () => {
     it('should resolve to a list of all beers', () => {
-      handler({ message, args: [], logger: console })
+      return handler({ message, args: ['all'], logger: console })
         .then(() => {
           expect(formatters.formatBeer.mock.calls.length).toEqual(mockBeers.length);
-          done();
-        })
-        .catch(() => expect(false).toEqual(true));
+        });
     });
   });
 
   it(`should reject if there's some message error`, () => {
     const errmsg = 'fake error';
-    message.reply = jest.fn((msg) => Promise.reject(errmsg));
-    handler({ message, args: [], logger: console })
-      .then(() => expect(false).toEqual(true)) // should not get here
-      .catch((err) => expect(err).toEqual(errmsg));
+    message.reply = jest.fn(() => Promise.reject(errmsg));
+    return handler({ message, args: [], logger: console })
+      .then((msg) => {
+        console.log(msg);
+        expect(1).toEqual(0);
+      })
+      .catch((err) => {
+        expect(err.trim()).toEqual(errmsg);
+      });
 
   });
 

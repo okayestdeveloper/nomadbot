@@ -9,17 +9,15 @@ describe('!ping', () => {
   });
 
   it(`should reply with "U wot, m8?!"`, () => {
-    handler({ message })
-      .then((str) => expect(str).toEqual('U wot, m8?!'))
-      .catch(() => expect(false).toEqual(true)) // should not get here
+    return handler({ message })
+      .then((str) => expect(str).toEqual('U wot, m8?!'));
   });
 
   it(`should reject if there's some error`, () => {
     const errmsg = 'fake error';
     message.reply = jest.fn((msg) => Promise.reject(errmsg));
-    handler({ message })
-      .then(() => expect(false).toEqual(true)) // should not get here
+    return handler({ message })
+      .then(() => expect(1).toEqual(0))
       .catch((err) => expect(err).toEqual(errmsg));
-
   });
 });

@@ -44,11 +44,11 @@ function handler({ message }) {
   const files = fs.readdirSync(commandDir);
   const msgText = `\n` + files.reduce(filesReducer, []);
 
-  if (msgText && msgText.length >= 0) {
+  if (msgText && msgText.length > 1) {
     return message.reply(msgText);
   }
 
-  return Promise.reject(new Error('No help text found.'))
+  return Promise.reject('No help text found.')
 }
 
 module.exports = handler;
