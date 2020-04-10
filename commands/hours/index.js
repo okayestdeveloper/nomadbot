@@ -28,7 +28,7 @@ function handler({ message, args }) {
   if (hours) {
     hours = JSON.parse(hours);
 
-    if (hours && hours.length >= 0) {
+    if (hours && hours.length > 0) {
       const msgText = hours
         .filter((hourObj) => !day || hourObj.day === day)
         .reduce((acc, cur) => acc + formatHours(cur), '') || `Closed`;
@@ -37,7 +37,7 @@ function handler({ message, args }) {
     }
   }
 
-  return Promise.reject(new Error(`No hours found.`));
+  return Promise.reject(`No hours found.`);
 }
 
 module.exports = handler;

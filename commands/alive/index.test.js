@@ -23,19 +23,11 @@ describe('!alive', () => {
   });
 
   it('should reject with an error if no text is loaded', () => {
-    fs.readFileSync.mockReturnValue(null);
-    handler({ message, args: [] })
-      .then(() => expect(false).toEqual(true)) // should not get here
-      .catch((error) => {
-        expect.any(Error);
-        expect(error.message).toEqual('No hours found.')
-      });
-
     fs.readFileSync.mockReturnValue('');
-    handler({ message, args: [] })
-      .then(() => expect(false).toEqual(true)) // should not get here
+    return handler({ message, args: [] })
+      .then(() => expect(1).toEqual(0))
       .catch((error) => {
-        expect(error.message).toEqual('No hours found.')
+        expect(error.trim()).toEqual('Could not load lyrics.')
       });
   });
 });

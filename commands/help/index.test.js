@@ -39,17 +39,15 @@ describe('!help', () => {
   it(`should return a promise that resolves to the help text`, () => {
     const helpText = 'help text';
     fs.readFileSync.mockReturnValue(helpText);
-    handler({ message })
-      .then((text) => expect(text).toEqual(helpText))
-      .catch(() => expect(false).toEqual(true)); // should not get here
+    return handler({ message })
+      .then((text) => expect(text.trim()).toEqual(helpText));
   });
 
   it(`should reject if there's some error`, () => {
     const errmsg = 'fake error';
     message.reply = jest.fn(() => Promise.reject(errmsg));
-    handler({ message })
-      .then(() => expect(false).toEqual(true)) // should not get here
+    return handler({ message })
+      .then(() => expect(1).toEqual(0))
       .catch((err) => expect(err).toEqual(errmsg));
-
   });
 });
