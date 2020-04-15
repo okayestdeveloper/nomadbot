@@ -46,7 +46,7 @@ client.on('message', (message) => {
   const { author, channel, content } = message;
   if (content[0] === '!') {
     const channelName = channel ? channel.name || channel.recipient || channel.id : '??';
-    logger.debug(`Nomadbot: incoming message '${content}' from user ${username} on channel ${channelName}`);
+    logger.debug(`Nomadbot: incoming message '${content}' from user ${author.username} on channel ${channelName}`);
 
     const args = content
       .substring(1)
