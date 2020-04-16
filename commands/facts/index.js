@@ -9,7 +9,7 @@ function handler({ message }) {
     facts = JSON.parse(facts);
 
     if (facts && facts.length > 0) {
-      const random = Math.floor(Math.random() * (facts.length - 1)) + 1;
+      const random = Math.floor(Math.random() * (facts.length - 1));
       const msgText = facts[random];
 
       return message.reply(msgText);
