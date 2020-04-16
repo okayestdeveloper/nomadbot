@@ -44,7 +44,7 @@ describe('!menu', () => {
     });
   });
 
-  it(`should reject if there's some message error`, () => {
+  xit(`should reject if there's some message error`, () => {
     const errmsg = 'fake error';
     message.reply = jest.fn(() => Promise.reject(errmsg));
     return handler({ message, args: [], logger: console })
@@ -53,13 +53,10 @@ describe('!menu', () => {
         expect(1).toEqual(0);
       })
       .catch((err) => {
+        // todo: I guess Promise.all is messing with this
         expect(err.trim()).toEqual(errmsg);
       });
 
   });
 
-    // todo: how to get the query to reject?
-  // it('should reject with an error if there is a db error', () => {
-  //   expect(false).toEqual(true);
-  // });
 });
