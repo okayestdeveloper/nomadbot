@@ -18,7 +18,7 @@ describe('!menu', () => {
 
   describe('called without "all" argument', () => {
     it('should call formatBeer for each ontap beer', () => {
-      const tapCount = mockBeers.filter((b) => b.ontap).length;
+      const tapCount = mockBeers.docs.filter((b) => b.ontap).length;
       return handler({ message, args: [], logger: console })
         .then(() => {
           expect(formatters.formatBeer.mock.calls.length).toEqual(tapCount);
