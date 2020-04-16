@@ -1,5 +1,5 @@
 const { formatBeer } = require('../../shared/formatters');
-const db = require('../../shared/firebase')();
+const db = require('../../shared/firebase');
 
 function handler({ message, logger }) {
   return db.collection('beers').get()
