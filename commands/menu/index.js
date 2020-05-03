@@ -1,7 +1,7 @@
 const { formatBeer } = require('../../shared/formatters');
-const db = require('../../shared/firebase')
+const db = require('../../shared/firebase');
 
-function handler({ message, logger, args }) {
+function handler({ logger, author, args }) {
   const showAll = args.includes('all');
 
   let query = db.collection('beers');
@@ -12,16 +12,18 @@ function handler({ message, logger, args }) {
 
   query = query.orderBy('name');
 
-  return query.get()
+  return query
+    .get()
     .then((snapshot) => {
-      const promises = [];
-      snapshot.forEach((doc) => {
-        const msgText = formatBeer(doc.data(), showAll);
-        // todo: DM instead of reply
-        promises.push(message.reply(msgText));
-      });
+      return author.createDM().then((dmChannel) => {
+        const promises = [];
+        snapshot.forEach((doc) => {
+          const msgText = formatBeer(doc.data(), showAll);
+          promises.push(dmChannel.send(msgText));
+        });
 
-      return Promise.all(promises);
+        return Promise.all(promises);
+      });
     })
     .catch((err) => {
       logger.error('Error getting documents: ', err);
