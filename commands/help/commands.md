@@ -8,7 +8,5 @@
     Shares several TNB links, including a link to the menu. 
 - **!hours**  
     Hopefully lists the up to date taproom hours.
-- **!fucklegion**  
-    There's only one answer.
 
 There are some hidden commands, as well. _Hidden for a reason_. 
