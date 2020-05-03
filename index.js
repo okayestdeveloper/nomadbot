@@ -2,35 +2,9 @@ const path = require('path');
 const envPath = path.join('.', `.env`);
 const dotenv = require('dotenv');
 dotenv.config({ path: envPath });
-
 const fs = require('fs');
-
-// todo: move this to shared as a singleton
-// Configure logger settings
-const winston = require('winston');
-require('winston-daily-rotate-file');
-
-const logger = winston.createLogger({
-  level: 'debug',
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.DailyRotateFile({
-      filename: 'nomadbot-%DATE%.log.json',
-      zippedArchive: true,
-      level: 'debug',
-      dirname: '/tmp',
-      maxFiles: '7d',
-    }),
-  ],
-});
-
-if (process.env.NODE_ENV !== 'production') {
-  logger.remove(winston.transports.Console);
-  logger.add(new winston.transports.Console, {
-    colorize: true,
-    level: 'debug',
-  });
-}
+const moment = require('moment');
+const logger = require('./shared/logger');
 
 // Initialize Discord Bot
 const Discord = require('discord.js');
@@ -46,13 +20,16 @@ client.on('message', (message) => {
   const { author, channel, content } = message;
   if (content[0] === '!') {
     const channelName = channel ? channel.name || channel.recipient || channel.id : '??';
-    logger.debug(`Nomadbot: incoming message '${content}' from user ${author.username} on channel ${channelName}`);
+    const timestamp = moment().format('MM/DD/YY HH:mm:ss');
+    logger.debug(`Nomadbot (${timestamp}): incoming message '${content}' from user ${author.username} on channel ${channelName}`);
 
     const args = content
       .substring(1)
       .split(' ')
       .map((arg) => arg.toLocaleLowerCase());
     const command = args.shift();
+
+    logger.debug(`Nomadbot: got command '${command} ${args}'`);
 
     // read the commands folder list
     const list = fs.readdirSync(path.resolve('commands'));
@@ -64,7 +41,7 @@ client.on('message', (message) => {
       return allowed;
     }, []);
 
-    logger.debug(`Nomadbot: got command '${command} ${args}'`);
+    logger.debug(`Nomadbot: known commands: ${dirs.join(', ')}`);
 
     switch (command) {
       default:
